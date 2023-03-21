@@ -1,0 +1,32 @@
+
+public class RegularAccount extends Account{
+
+	private final double fixedRegularInterest = 0.06;
+	private final double monthlyFee = 10;
+	
+	public RegularAccount(int accountNumber, double balance, Customer customer) {
+		super(accountNumber, balance, customer);
+		// TODO Auto-generated constructor stub
+	}
+	public double makeDeposit(double deposited) {
+		this.balance = balance + deposited;
+		
+		return this.balance;		
+	}
+	
+	public double makeWithdrawal(double withdrawal) {
+		this.balance = balance - withdrawal;
+			if(this.balance < 0) {
+				System.out.println("You may only withdraw to  0, you have withdrawn the remainder of your account.");
+				this.balance = 0;
+			}
+			
+		return this.balance;
+	}
+
+	public void endOfMonth() {
+		double interestGained = (balance * fixedRegularInterest);
+		this.balance = balance + interestGained - monthlyFee;
+	}
+	
+}
