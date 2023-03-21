@@ -1,0 +1,220 @@
+import java.util.Scanner;
+import java.util.ArrayList;
+
+public class UseAccount {
+
+			
+	public static void main(String[]args) {
+		
+		Scanner in = new Scanner (System.in);
+		
+		boolean menuTerminator = true;
+		//declare the master array list
+		ArrayList<Account> allAccounts = new ArrayList<Account>();
+
+		while(menuTerminator){
+			//Banking main menu
+			System.out.printf("%15s", "Bank Menu\n");
+			System.out.println("=======================");
+			System.out.print("1:  Create Checking Account\n");
+			System.out.print("2:  Create Gold Account\n");
+			System.out.print("3:  Create Regular Account\n");
+			System.out.print("4:  Deposit\n");
+			System.out.print("5:  Withdraw\n");
+			System.out.print("6:  Display Account Info.\n");
+			System.out.print("7:  Remove an Account\n");
+			System.out.print("8:  Apply end of month (Interest/Fees)\n");
+			System.out.print("9:  Display Bank Statistics\n");
+			System.out.print("10: Exit\n\n");
+			System.out.print("Please enter your choice (1-10): ");
+			int userChoice = in.nextInt();
+			
+				switch(userChoice) {
+				
+				case 1:
+					//Create a checking account
+					System.out.print("\nPlease input the customer name: ");
+					String checkingName = in.next();
+					
+					System.out.print("\nPlease input the customer ID: ");
+					int checkingID = in.nextInt();
+					
+					System.out.print("\nPlease input the account number: ");
+					int checkingNumber = in.nextInt();
+					//create checking account with customer as a parameter
+					CheckingAccount theChecking = new CheckingAccount(checkingNumber, 0, makeCustomer(checkingName, checkingID));
+					allAccounts.add(theChecking);
+					
+					System.out.print("\nAccount created successfully!\n\n");
+					break;
+					
+					
+				case 2:
+					//Create a gold account
+					System.out.print("\nPlease input the customer name: ");
+					String goldName = in.next();
+					
+					System.out.print("\nPlease input the customer ID: ");
+					int goldID = in.nextInt();
+					
+					System.out.print("\nPlease input the account number: ");
+					int goldNumber = in.nextInt();
+					//create gold account with customer as a parameter
+					GoldAccount theGold = new GoldAccount(goldNumber, 0, makeCustomer(goldName, goldID));
+					allAccounts.add(theGold);
+					
+					System.out.print("\nAccount created successfully!\n\n");
+					
+					break;
+					
+					
+				case 3:
+					//Create a regular account
+					System.out.print("\nPlease input the customer name: ");
+					String regularName = in.next();
+					
+					System.out.print("\nPlease input the customer ID: ");
+					int regularID = in.nextInt();
+					
+					System.out.print("\nPlease input the account number: ");
+					int regularNumber = in.nextInt();
+					//create a regular account with customer as a parameter
+					RegularAccount theRegular = new RegularAccount(regularNumber, 0, makeCustomer(regularName, regularID));
+					allAccounts.add(theRegular);
+					
+					System.out.print("\nAccount created successfully!\n\n");
+					break;
+					
+					
+				case 4:
+					
+					//deposit into an account
+					System.out.print("\nPlease enter the account number: ");
+					int depositAccountNumber = in.nextInt();
+					//iterate through arraylist to find correct account
+					for(Account currentAccount : allAccounts) {
+						if(depositAccountNumber == currentAccount.getAccountNumber()) {
+							
+							System.out.print("\nPlease enter the amount: ");
+							double depositedAmount = in.nextDouble();
+						
+							System.out.print("\nThe new balance is " + currentAccount.makeDeposit(depositedAmount) + "\n");
+						}
+					
+					}
+					break;
+					
+					
+				case 5:
+					//withdraw from an account
+					System.out.print("Please enter the account number: ");
+					int withdrawalAccountNumber = in.nextInt();
+					//iterate through arraylsit to find correct account
+					for (Account currentAccount : allAccounts) {
+						if(withdrawalAccountNumber == currentAccount.getAccountNumber()) {
+							System.out.print("\nPlease enter the amount: ");
+							double withdrawalAmount = in.nextDouble();
+							
+							System.out.print("\nThe new balance is " + currentAccount.makeWithdrawal(withdrawalAmount) + "\n");
+						}
+					}
+					break;
+					
+					
+				case 6:
+					//Account info
+					System.out.print("Please input the account number: ");
+					int showAccountInfoNumber = in.nextInt();
+					//iterate through arraylist to find correct account
+					for(Account currentAccount : allAccounts) {
+						if (showAccountInfoNumber == currentAccount.getAccountNumber()) {
+							System.out.print("Details of account #" + showAccountInfoNumber);
+							System.out.print("\n=============================\n");
+							System.out.print(currentAccount.toString());
+						}
+					}
+					break;
+					
+					
+				case 7:
+					System.out.print("Please enter the account number of the account you'd like to remove: ");
+					int removedAccountNumber = in.nextInt();
+					//create reference variable
+					Account accountRef = null;
+					
+					for(Account currentAccount : allAccounts) {
+						if(currentAccount.getAccountNumber() == removedAccountNumber) {
+							accountRef = currentAccount;
+							System.out.print("\nRemoved!\n");
+							
+						}
+						
+					}
+					allAccounts.remove(accountRef);
+					break;
+					
+					
+				case 8:
+					//apply end of month
+					
+					for(Account currentAccount : allAccounts) {
+						//overwritten method
+						currentAccount.endOfMonth();
+					}
+					break;
+					
+					
+				case 9:
+					//bank stats:
+					//total sum of all accounts
+					//number of zero-balance accounts
+					//average balance of accounts
+					//account with largest balance
+					double sum = 0;
+					double average;
+					double largest = allAccounts.get(0).getBalance();
+					Account largestBalanceAccount = null;
+					
+					ArrayList<Account>zeroBalance = new ArrayList<Account>();
+					
+					//iterate through allAccounts arraylist, collect sum and add to zeroBalance if applicable
+					for(Account currentAccount : allAccounts) {
+						sum += currentAccount.getBalance();
+						if(currentAccount.getBalance() <= 0) {
+							zeroBalance.add(currentAccount);
+						}
+						if(currentAccount.getAccountNumber() > largest) {
+							largest = currentAccount.getBalance();
+							largestBalanceAccount = currentAccount;
+						}
+						
+					}
+				
+					average = sum / allAccounts.size();
+					
+					
+
+					System.out.println("Here are the bank statistics:");
+					System.out.println("=============================");
+					System.out.println("Total sum of all accounts: " + sum);
+					System.out.println("Total number of zero-balance accounts: " + zeroBalance.size());
+					System.out.println("Average balance of all accounts: " + average);
+					System.out.println("The largest balance is: " + largest);
+		
+					
+				case 10:
+					menuTerminator = false;
+				
+				
+			}//end switch
+				
+		}//end while loop
+	}//end main method
+	public static Customer makeCustomer(String name, int id) {
+		
+		Customer theCustomer = new Customer(id, name);
+		return theCustomer;	
+	}//end makeCustomer
+	}//end class
+	
+	
