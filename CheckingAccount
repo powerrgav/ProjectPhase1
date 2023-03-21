@@ -1,0 +1,41 @@
+
+public class CheckingAccount extends Account {
+
+	private final double transactionFee = 3;
+	private int transactionNumber = 0;
+	
+	public CheckingAccount(int accountNumber, double balance, Customer customer) {
+		super(accountNumber, balance, customer);
+		// TODO Auto-generated constructor stub
+	}
+
+	public double makeDeposit(double deposited) {
+		this.balance = balance + deposited;
+		this.transactionNumber++;
+		return this.balance;		
+	}
+	
+	public double makeWithdrawal(double withdrawal) {
+		this.balance = balance - withdrawal;
+			if(this.balance < 0) {
+				System.out.println("You may only withdraw to  0, you have withdrawn the remainder of your account.");
+				this.balance = 0;
+			}
+			this.transactionNumber++;
+		return this.balance;
+	}
+
+	public void endOfMonth() {
+		
+		if(transactionNumber > 2) {
+			int totalTransactions = transactionNumber - 2;
+			double totalFees = totalTransactions * transactionFee;
+			
+			this.balance = balance - totalFees;
+		}
+		transactionNumber = 0;
+		
+	}
+	
+
+}
