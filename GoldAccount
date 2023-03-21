@@ -1,0 +1,28 @@
+
+public class GoldAccount extends Account {
+
+	private final double fixedGoldInterest = 0.05;
+	
+	public GoldAccount(int accountNumber, double balance, Customer customer) {
+		super(accountNumber, balance, customer);
+		// TODO Auto-generated constructor stub
+	}
+	
+	public double makeDeposit(double deposited) {
+		this.balance = balance + deposited;
+		
+		return this.balance;		
+	}
+	
+	public double makeWithdrawal(double withdrawal) {
+		this.balance = balance - withdrawal;
+		return this.balance;
+	}
+
+	public void endOfMonth() {
+		double interestGained = balance * fixedGoldInterest;
+		this.balance = balance + interestGained;
+	}
+
+	
+}
